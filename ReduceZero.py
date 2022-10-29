@@ -14,7 +14,7 @@ class ReduceZero(ProcessedData):
             equal_zero_index = (self.label_df != 1).values
             equal_one_index = ~equal_zero_index
 
-            #pass_feature = np.array(self.feature_df[equal_zero_index])
+           
             fail_feature = np.array(self.feature_df[equal_one_index])
 
             ex_index=[]
@@ -27,17 +27,14 @@ class ReduceZero(ProcessedData):
                 if i not in ex_index:
                     select_index.append(i)
             ex_index = list(set(ex_index))
-            #print(self.feature_df)
+           
             select_index=list(set(select_index))
-            #print(select_index)
+           
             featureold=self.feature_df
             sel_feature = self.feature_df.values.T[select_index].T
-            #print(sel_feature)
+           
             columns = self.feature_df.columns[select_index]
-            #print(columns)
-            self.feature_df = pd.DataFrame(sel_feature, columns=columns)
-
-            #self.data_df = pd.concat([sel_feature, self.label_df], axis=1)
+            self.feature_df = pd.DataFrame(sel_feature, columns=columns)          
             covMatrix = self.feature_df.cov()
 
             featValue, featVec = np.linalg.eig(covMatrix)
