@@ -18,32 +18,13 @@ class CalculateSuspiciousness():
         self._calculate_susp_for_method_list()
         self._calculate_rank()
         self._save_rank()
-#compute pipline time
+
     def _calculate_susp_for_method_list(self):
         enter=time.time()
         last=enter
         for method in self.method:
             self._calculate_susp_for_method(method)
-            f = open(method + "_time.txt", "a")
-            end = time.time()
-            final=end-self.stime-(last-enter)
-            last=end
-            f.write("\n"+"%.2f"%final)
-            f.close()
-            print("%.2f"%final)
-#compute FL time
-#    def _calculate_susp_for_method_list(self):
-#        enter=time.time()
-#        last=enter
-#        for method in self.method:
-#            self._calculate_susp_for_method(method)
-#            f = open(method + "_time.txt", "a")
-#            end = time.time()
-#            final=end-enter
-#            enter=end
-#            f.write("\n"+"%.2f"%final)
-#            f.close()
-#            print("%.2f"%final)
+
 
     def _calculate_susp_for_method(self, method):
         self.suspicious_list = calc_corr(self.data_obj.data_df, method)
