@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from data_process.ProcessedData import ProcessedData
 
-class ReduceZero(ProcessedData):
+class LdaSlice(ProcessedData):
 
     def __init__(self, raw_data):
         super().__init__(raw_data)
