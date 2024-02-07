@@ -22,7 +22,7 @@ def parse_args(args):
     if config_dict["-e"] == "fs" or config_dict["-e"] == "fs_cvae" or config_dict["-e"] == "lda_cvae" or config_dict["-e"] == "lda_smote" or config_dict["-e"] == "reducezero_smote" or config_dict["-e"] == "reducezero":
         config_dict["-cp"] = find(args, "-cp")
         config_dict["-ep"] = find(args, "-ep")
-    if config_dict["-e"] not in ["origin", "reducezero","reducezero_smote", "reducezero_cvae", "resampling", "undersampling", "fs", "cvae", "fs_cvae", "smote","lda_cvae","lda_smote"]:
+    if config_dict["-e"] not in ["origin", "LdaSlice","LdaSlice_smote", "LdaSlice_cvae", "resampling", "undersampling", "fs", "cvae", "fs_cvae", "smote","lda_cvae","lda_smote"]:
         raise Exception(f"Wrong parameters {config_dict}, please check again.")
 
     optional_args = ["-r", "-a"]
