@@ -9,7 +9,7 @@ from data_process.data_systhesis.cvae_synthesis import CVAESynthesisData
 from data_process.dimensional_reduciton.PCA import PCAData
 from read_data.ExampleDataLoader import ExampleDataLoader
 from data_process.dimensional_reduciton.LDA import LDAData
-from data_process.dimensional_reduciton.ReduceZero import ReduceZero
+from data_process.dimensional_reduciton.LdaSlice import LdaSlice
 from data_process.data_undersampling.undersampling import UndersamplingData
 from calculate_suspiciousness.CalculateSuspiciousness import CalculateSuspiciousness
 import time
@@ -44,8 +44,7 @@ class Pipeline:
             return self._dynamic_choose(ExampleDataLoader)
         if self.dataset == "SIR":
             return self._dynamic_choose(SIRDataLoader)
-        if self.dataset == "siemens":
-            return self._dynamic_choose(SiemensDataLoader)
+
 
     def _run_task(self):
         if self.experiment == "origin":
@@ -53,60 +52,15 @@ class Pipeline:
         elif self.experiment == "resampling":
             self.data_obj = ResamplingData(self.dataloader)
             self.data_obj.process()
-        elif self.experiment == "reducezero":
+        elif self.experiment == "LdaSlice":
             cp = float(self.configs["-cp"])
             ep = float(self.configs["-ep"])
-            self.data_obj = ReduceZero(self.dataloader)
+            self.data_obj = LdaSlice(self.dataloader)
             self.data_obj.process(cp, ep)
-        elif self.experiment == "reducezero_smote":
-            cp = float(self.configs["-cp"])
-            ep = float(self.configs["-ep"])
-            self.data_obj = ReduceZero(self.dataloader)
-            self.data_obj.process(cp, ep)
-            self.data_obj = SMOTEData(self.data_obj)
-            self.data_obj.process()
-        elif self.experiment == "reducezero_cvae":
-            cp = float(self.configs["-cp"])
-            ep = float(self.configs["-ep"])
-            self.data_obj = ReduceZero(self.dataloader)
-            self.data_obj.process(cp, ep)
-            self.data_obj = CVAESynthesisData(self.data_obj)
-            self.data_obj.process()
         elif self.experiment == "undersampling":
             self.data_obj = UndersamplingData(self.dataloader)
             self.data_obj.process()
-        elif self.experiment == "smote":
-            self.data_obj = SMOTEData(self.dataloader)
-            self.data_obj.process()
-        elif self.experiment == "cvae":
-            self.data_obj = CVAESynthesisData(self.dataloader)
-            self.data_obj.process()
-        elif self.experiment == "fs":
-            cp = float(self.configs["-cp"])
-            ep = float(self.configs["-ep"])
-            self.data_obj = PCAData(self.dataloader)
-            self.data_obj.process(cp, ep)
-        elif self.experiment == "fs_cvae":
-            cp = float(self.configs["-cp"])
-            ep = float(self.configs["-ep"])
-            self.data_obj = PCAData(self.dataloader)
-            self.data_obj.process(cp, ep)
-            self.data_obj = CVAESynthesisData(self.data_obj)
-            self.data_obj.process()
-        elif self.experiment == "lda_smote":
-            cp = float(self.configs["-cp"])
-            ep = float(self.configs["-ep"])
-            self.data_obj = LDAData(self.dataloader)
-            self.data_obj.process(cp, ep)
-            self.data_obj = SMOTEData(self.data_obj)
-            self.data_obj.process()
-        elif self.experiment == "lda_cvae":
-            cp = float(self.configs["-cp"])
-            ep = float(self.configs["-ep"])
-            self.data_obj = LDAData(self.dataloader)
-            self.data_obj.process(cp, ep)
-            self.data_obj = CVAESynthesisData(self.data_obj)
-            self.data_obj.process()
+        
 
         save_rank_path = os.path.join(self.project_dir, "results")
         cc = CalculateSuspiciousness(self.data_obj, self.method, save_rank_path, self.experiment, self.stime)
